@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "recruit-recruiters"
+    }
+  },
+  "defaultProject": "recruit-recruiters",
+  "cli": {
+    "analytics": "7a8c65fb-27b5-4952-92e6-f95b0ec2a56f"
+  }
 }
