@@ -1,1 +1,19 @@
-<p>header works!</p>
+<mat-toolbar class="toolbar mat-elevation-z8" color="primary">
+  <a href=""> <img src="assets/github.png" /> Github </a>
+  <div class="title">
+    <span>Recruit-Recruiters</span>
+  </div>
+  <div class="toolbar-right-buttons">
+    <button mat-button>Saved Offers</button>
+    <button mat-flat-button *ngIf="!isLoggedIn">Login</button>
+
+    <button mat-button [matMenuTriggerFor]="optionsMenu" *ngIf="isLoggedIn">
+      Nume Prenume
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #optionsMenu="matMenu">
+      <button mat-menu-item><mat-icon>settings</mat-icon> Settings</button>
+      <button mat-menu-item><mat-icon>input</mat-icon>Logout</button>
+    </mat-menu>
+  </div>
+</mat-toolbar>
