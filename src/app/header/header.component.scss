@@ -1,10 +1,19 @@
-.title {
+.toolbar {
+  display: flex;
+  justify-content: space-between;
 }
 
-.toolbar-right-buttons {
+.title {
+  cursor: pointer;
+}
+
+.gitlogo{
+    position: relative;
+    top: 6px;
 }
 
 a {
+  text-decoration: none;
   color: inherit;
   font-size: 14px;
 }

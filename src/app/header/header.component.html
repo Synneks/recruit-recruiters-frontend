@@ -1,12 +1,14 @@
 <mat-toolbar class="toolbar mat-elevation-z8" color="primary">
-  <a href=""> <img src="assets/github.png" /> Github </a>
+  <button mat-button>
+    <a href=""> <img class="gitlogo" src="assets/github.png" /> Github </a>
+  </button>
   <div class="title">
     <span>Recruit-Recruiters</span>
   </div>
-  <div class="toolbar-right-buttons">
-    <button mat-button>Saved Offers</button>
+  <div>
     <button mat-flat-button *ngIf="!isLoggedIn">Login</button>
 
+    <button mat-button *ngIf="isLoggedIn">Saved Offers</button>
     <button mat-button [matMenuTriggerFor]="optionsMenu" *ngIf="isLoggedIn">
       Nume Prenume
       <mat-icon>account_circle</mat-icon>
