@@ -1,24 +1,35 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from './shared/material-components.module';
 import { HeaderComponent } from './header/header.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { MaterialModule } from './shared/material-components.module';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { JobOffersComponent } from './job-offers/job-offers.component';
+import { SearchBarComponent } from './job-offers/search-bar/search-bar.component';
+import { JobOffersListComponent } from './job-offers/job-offers-list/job-offers-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
+    JobOffersComponent,
+    SearchBarComponent,
+    JobOffersListComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule,
+    HttpClientModule,
+    RouterModule,
+    FormsModule,
     MaterialModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

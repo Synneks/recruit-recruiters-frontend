@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { JobOffersComponent } from './job-offers/job-offers.component';
 
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () =>
-      import('./job-offers/job-offers.module').then((module) => module.JobOffersModule),
+    component: JobOffersComponent,
   },
 ];
 
