@@ -1,13 +1,14 @@
 export class JobOffer {
   constructor(
-    public id: number,
+    public applicationLink: string,
+    public companyImage: string,
     public companyName: string,
-    public title: string,
+    public description: string,
+    public jobTitle: string,
     public location: string,
-    public type: string,
-    public requirements: string[],
-    public responsabilites: string[],
-    public benefits: string[],
-    public applicationLink: string
+    public offerLink: string,
+    public site: string,
+    public workType: string,
+    public collapsed:boolean = true
   ) {}
 }

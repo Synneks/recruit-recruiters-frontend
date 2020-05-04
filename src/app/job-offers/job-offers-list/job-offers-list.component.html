@@ -1,36 +1,23 @@
-<div class="row align-content-center" style="background-color: aqua;">
+<div class="row align-content-center">
   <div class="col-12">
-    <mat-accordion multi="true">
-      <mat-expansion-panel *ngFor="let jobOffer of jobOffers">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            {{ jobOffer.title }}
-          </mat-panel-title>
-          <mat-panel-title>
-            {{ jobOffer.companyName }}
-          </mat-panel-title>
-          <mat-panel-description>
-            {{ jobOffer.location }}
-          </mat-panel-description>
+    <mat-card style="margin-top: 1em; margin-bottom: 1em;"
+     *ngFor="let jobOffer of jobOffers" 
+     (click)="getDescription(jobOffer); jobOffer.collapsed = !jobOffer.collapsed">
+      <mat-card-header>
+        <mat-card-title>
+          {{ jobOffer.jobTitle }}, {{ jobOffer.companyName }}
+          <img src="{{ jobOffer.companyImage }}" alt="" />
+        </mat-card-title>
+        <mat-card-subtitle
+          >{{ jobOffer.location }}, {{ jobOffer.workType }}
+        </mat-card-subtitle>
+      </mat-card-header>
 
-          <mat-panel-description>
-            {{ jobOffer.type }}
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <h3>Responsabilities</h3>
-        <ul *ngFor="let resp of jobOffer.responsabilites">
-          <li>{{ resp }}</li>
-        </ul>
-        <h3>Requirements:</h3>
-        <ul *ngFor="let req of jobOffer.requirements">
-          <li>{{ req }}</li>
-        </ul>
-        <h3>Benefits:</h3>
-        <ul *ngFor="let ben of jobOffer.benefits">
-          <li>{{ ben }}</li>
-        </ul>
-          <button mat-flat-button color="accent" (click)="onApply(jobOffer.applicationLink)">Apply</button>
-      </mat-expansion-panel>
-    </mat-accordion>
+      <mat-card-content *ngIf="!jobOffer.collapsed">
+        <div [innerHTML] = "jobOffer.description">
+        </div>
+        <button mat-flat-button color="accent" (click)="onApply(jobOffer.applicationLink)">Apply</button>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { JobOfferService } from '../job-offers.service';
 
 @Component({
   selector: 'app-search-bar',
@@ -7,11 +8,13 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./search-bar.component.scss'],
 })
 export class SearchBarComponent implements OnInit {
-  constructor() {}
+  constructor(private jobOfferService: JobOfferService) {}
 
   ngOnInit(): void {}
 
   onSubmit(form: NgForm) {
-    console.log(form.value);
+    this.jobOfferService
+      .scrapeOffers(form.value['job-title'], form.value['location'])
+      .subscribe();
   }
 }
