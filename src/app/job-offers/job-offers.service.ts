@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { JobOffer } from './job-offer.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -12,9 +13,26 @@ export class JobOfferService {
 
   constructor(private http: HttpClient) {}
 
-  scrapeOffers(jobTitle: string, jobLocation: string) {
+  newSearch(jobTitle: string, jobLocation: string): Observable<JobOffer[]> {
+    let params = new HttpParams();
+    if (jobTitle !== '') {
+      params = params.set('title', jobTitle);
+    }
+    if (jobLocation !== undefined) {
+      params = params.set('location', jobLocation);
+    }
+    console.log(params);
+    
+    return this.scrapeOffers(params);
+  }
+
+  setPage(): Observable<JobOffer[]> {return;}
+
+  scrapeOffers(params: HttpParams) {
     return this.http
-      .get<JobOffer[]>(`http://127.0.0.1:5000/jobs/${jobTitle}/${jobLocation}`)
+      .get<JobOffer[]>(environment.crawlerUrl.concat('/jobs'), {
+        params: params
+      })
       .pipe(
         map((jobOffers) => {
           return jobOffers.map((jobOffer) => {

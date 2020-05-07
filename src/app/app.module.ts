@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { JobOffersComponent } from './job-offers/job-offers.component';
 import { SearchBarComponent } from './job-offers/search-bar/search-bar.component';
 import { JobOffersListComponent } from './job-offers/job-offers-list/job-offers-list.component';
+import { AuthComponent } from './auth/auth.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { JobOffersListComponent } from './job-offers/job-offers-list/job-offers-
     JobOffersComponent,
     SearchBarComponent,
     JobOffersListComponent,
+    AuthComponent,
   ],
   imports: [
     BrowserModule,
