@@ -5,6 +5,9 @@
 export const environment = {
   production: false,
   crawlerUrl: 'http://127.0.0.1:5000',
+  firebaseSignUpUrl: 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyDz3mJHsYThaJFZbPFIeTH3yhTVL5KOEbM',
+  firebaseLoginUrl: 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyDz3mJHsYThaJFZbPFIeTH3yhTVL5KOEbM',
+  firebaseDbUrl: 'https://recruit-recruiters.firebaseio.com/',
 };
 
 /*
