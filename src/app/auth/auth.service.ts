@@ -19,6 +19,7 @@ export interface AuthResponseData {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   user = new BehaviorSubject<User>(null);
+  loggedOut = new BehaviorSubject<boolean>(null);
   private tokenExpirationTimer: any;
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -80,7 +81,7 @@ export class AuthService {
       userData._token,
       new Date(userData._tokenExpirationDate)
     );
-    console.log(loadedUser);
+
     if (loadedUser.token) {
       this.user.next(loadedUser);
       const expirationDuration =
@@ -92,7 +93,7 @@ export class AuthService {
 
   logout() {
     this.user.next(null);
-    this.router.navigate(['/auth']);
+    this.router.navigate(['']);
     localStorage.removeItem('userData');
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
@@ -103,6 +104,7 @@ export class AuthService {
   autoLogout(expirationDuration: number) {
     this.tokenExpirationTimer = setTimeout(() => {
       this.logout();
+      this.loggedOut.next(true);
     }, expirationDuration);
   }
 
@@ -126,19 +128,19 @@ export class AuthService {
     }
     switch (errorRes.error.error.message) {
       case 'EMAIL_EXISTS':
-        errorMessage = 'Email already exists';
+        errorMessage = 'Email already exists!';
         break;
       case 'EMAIL_NOT_FOUND':
-        errorMessage = 'Email does not exist';
+        errorMessage = 'Email does not exist!';
         break;
       case 'INVALID_PASSWORD':
-        errorMessage = 'Incorrect password';
+        errorMessage = 'Incorrect password!';
         break;
       case 'TOO_MANY_ATTEMPTS_TRY_LATER':
-        errorMessage = 'Blocked requests, try again later';
+        errorMessage = 'Blocked requests, try again later!';
         break;
       case 'USER_DISABLED':
-        errorMessage = 'Account disabled';
+        errorMessage = 'Account disabled!';
         break;
     }
     return throwError(errorMessage);

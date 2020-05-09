@@ -14,7 +14,7 @@ export class AuthComponent{
   isLoginMode = true;
   isLoading = false;
 
-  constructor(private authService: AuthService, private router: Router, private _snackBar: MatSnackBar) {}
+  constructor(private authService: AuthService, private router: Router, private snackBar: MatSnackBar) {}
 
   onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;
@@ -42,9 +42,10 @@ export class AuthComponent{
         console.log(resData);
         this.isLoading = false;
         this.router.navigate(['']);
+        this.showSnackBar('Successfully logged in!');
       },
       errorMessage => {
-        this.showErrorSnackBar(errorMessage);
+        this.showSnackBar(errorMessage);
         this.isLoading = false;
       }
     );
@@ -52,8 +53,8 @@ export class AuthComponent{
     form.reset();
   }
 
-  showErrorSnackBar(message: string){
-    this._snackBar.open(message, "Close", {
+  showSnackBar(message: string){
+    this.snackBar.open(message, "Close", {
       duration: 3000,
     });
   }

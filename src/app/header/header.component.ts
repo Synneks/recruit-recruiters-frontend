@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { Subscription } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-header',
@@ -14,11 +14,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isLoggedIn = false;
   email: string = null;
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
-    this.userSub = this.authService.user.subscribe((user) => {      
+    this.userSub = this.authService.user.subscribe((user) => {
       this.isLoggedIn = user ? true : false;
+    });
+    this.authService.loggedOut.subscribe((bool) => {
+      if (bool) this.showSnackBar('Automatically logged out due to inactivity');
     });
   }
 
@@ -28,12 +35,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onLogout() {
     this.authService.logout();
+    this.showSnackBar('Logged out');
   }
 
-  onSavedOffers(){
-    this.router.navigate['saved-offers'];
+  onSavedOffers() {
+    this.router.navigate(['saved-offers']);
   }
 
+  showSnackBar(message: string) {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+    });
+  }
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
   }
