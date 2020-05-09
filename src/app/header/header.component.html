@@ -6,16 +6,8 @@
     <span>Recruit-Recruiters</span>
   </div>
   <div>
-    <button mat-flat-button *ngIf="!isLoggedIn">Login</button>
-
-    <button mat-button *ngIf="isLoggedIn">Saved Offers</button>
-    <button mat-button [matMenuTriggerFor]="optionsMenu" *ngIf="isLoggedIn">
-      Nume Prenume
-      <mat-icon>account_circle</mat-icon>
-    </button>
-    <mat-menu #optionsMenu="matMenu">
-      <button mat-menu-item><mat-icon>settings</mat-icon> Settings</button>
-      <button mat-menu-item><mat-icon>input</mat-icon>Logout</button>
-    </mat-menu>
+    <button mat-flat-button *ngIf="!isLoggedIn" (click)="onLogin()">Login</button>
+    <button mat-button *ngIf="isLoggedIn" (click)="onSavedOffers()">Saved Offers</button>
+    <button mat-flat-button *ngIf="isLoggedIn" (click)="onLogout()">Logout</button>
   </div>
 </mat-toolbar>

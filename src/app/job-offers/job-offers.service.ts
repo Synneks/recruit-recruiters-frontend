@@ -20,9 +20,7 @@ export class JobOfferService {
     }
     if (jobLocation !== undefined) {
       params = params.set('location', jobLocation);
-    }
-    console.log(params);
-    
+    }    
     return this.scrapeOffers(params);
   }
 

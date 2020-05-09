@@ -8,6 +8,10 @@ const routes: Routes = [
     path: '',
     component: JobOffersComponent,
   },
+  // {
+    // path: 'saved-offers',
+    // canActivate: [AuthGuard],
+  // },
   { path: 'auth', 
     component: AuthComponent },
 ];

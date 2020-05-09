@@ -1,12 +1,25 @@
 <div class="row align-content-center">
   <div class="col-12">
-    <mat-card style="margin-top: 1em; margin-bottom: 1em;"
-     *ngFor="let jobOffer of jobOffers" 
-     (click)="getDescription(jobOffer); jobOffer.collapsed = !jobOffer.collapsed">
+    <mat-card
+      style="margin-top: 1em; margin-bottom: 1em;"
+      *ngFor="let jobOffer of jobOffers"
+      (click)="
+        getDescription(jobOffer); jobOffer.collapsed = !jobOffer.collapsed
+      "
+    >
       <mat-card-header>
         <mat-card-title>
-          {{ jobOffer.jobTitle }}, {{ jobOffer.companyName }}
-          <img src="{{ jobOffer.companyImage }}" alt="" />
+          <div class="row align-content-center justify-content-around" style="background-color: yellowgreen;">
+                      <div class="col-xs-7" style="background-color: blue;">
+                        <p>{{ jobOffer.jobTitle }}</p>
+                      </div>
+                      <div class="col-xs-3" style="background-color: red;">
+                        <p>{{ jobOffer.companyName }}</p>
+                      </div>
+                      <div class="company-photo">
+                        <img src="{{ jobOffer.companyImage }}" alt="" />
+                      </div>
+          </div>
         </mat-card-title>
         <mat-card-subtitle
           >{{ jobOffer.location }}, {{ jobOffer.workType }}
@@ -14,9 +27,14 @@
       </mat-card-header>
 
       <mat-card-content *ngIf="!jobOffer.collapsed">
-        <div [innerHTML] = "jobOffer.description">
-        </div>
-        <button mat-flat-button color="accent" (click)="onApply(jobOffer.applicationLink)">Apply</button>
+        <div [innerHTML]="jobOffer.description"></div>
+        <button
+          mat-flat-button
+          color="accent"
+          (click)="onApply(jobOffer.applicationLink)"
+        >
+          Apply
+        </button>
       </mat-card-content>
     </mat-card>
   </div>
