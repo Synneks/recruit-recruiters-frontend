@@ -1,13 +1,13 @@
 <form (ngSubmit)="onSubmit(form)" #form="ngForm">
-  <div class="row align-content-center search-elements">
+  <div class="row align-content-center mt-5">
     <div class="col-md-6 columns">
-      <mat-form-field class="full-width-field" appearance="outline">
+      <mat-form-field class="w-100" appearance="outline">
         <mat-label>Job Title</mat-label>
         <input matInput name="job-title" ngModel />
       </mat-form-field>
     </div>
     <div class="col-4 columns">
-      <mat-form-field class="full-width-field" appearance="outline">
+      <mat-form-field class="w-100" appearance="outline">
         <mat-label>Location</mat-label>
         <mat-select [(ngModel)]="selectedLocation" name="job-location">
           <mat-option *ngFor="let location of locations" [value]="location">

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { JobOffer } from '../job-offer.model';
 import { Subscription } from 'rxjs';
-import { JobOfferService } from '../job-offers.service';
+import { JobOffersService } from '../job-offers.service';
 
 @Component({
   selector: 'app-job-offers-list',
@@ -9,6 +9,7 @@ import { JobOfferService } from '../job-offers.service';
   styleUrls: ['./job-offers-list.component.scss'],
 })
 export class JobOffersListComponent implements OnInit, OnDestroy {
+  trackByJobOfferOfferLink = (index, jobOffer) => jobOffer.offerLink;
   jobOffers: JobOffer[] = [
     new JobOffer(
       'https://ro.indeed.com/rc/clk?jk=e4c02238620f929a&from=vj&pos=bottom&sjdu=bUhgiVwp1LmavqUbZy97GDgZAsB2aArt4-cqGeMxRB4AUAHUUiRcVM7QuYaBvGaEsrIF6XN46CbLf-WvsLnHOoUjYTHjog9H7UinClKhM5Q',
@@ -25,33 +26,22 @@ export class JobOffersListComponent implements OnInit, OnDestroy {
       'https://www.ejobs.ro/user/locuri-de-munca/embedded-pre-sales-manager/1287652',
       'https://img.ejobs.ro/img/logos/7/7586.jpg',
       'NTT Data Romania SA',
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vulputate eros erat, a blandit tortor vehicula a. Quisque sollicitudin ante quis velit ullamcorper imperdiet. Pellentesque vel tellus sit amet nunc dignissim tincidunt. Nam consectetur magna eu ultrices finibus. Praesent finibus ligula imperdiet mauris pellentesque mollis. Donec at odio in neque facilisis maximus in et eros. Duis facilisis orci ac justo tempus bibendum. Maecenas imperdiet lacus eget sapien placerat accumsan. Pellentesque odio dolor, eleifend et pretium in, consectetur ac ex. Mauris ac dui arcu. Pellentesque convallis mauris non nisl venenatis vehicula. Praesent luctus leo quis libero viverra ultrices. Proin posuere rutrum rhoncus. Sed molestie suscipit purus. Donec nec ligula mollis, egestas quam non, egestas sapien. Vivamus tristique magna tellus, sit amet convallis dui lacinia ac. Praesent vel diam a magna cursus vestibulum. Proin condimentum auctor consequat. Maecenas porta sed tellus eu mattis. Integer nulla nisl, auctor ac nulla eget, commodo euismod magna. Morbi suscipit neque at turpis dictum volutpat. Aliquam erat volutpat. Suspendisse in porta libero. Donec at libero id neque ultricies ultrices. Sed efficitur a enim eu fringilla. Maecenas tincidunt finibus posuere. In bibendum eu tortor quis volutpat. Sed quam orci, tempus quis elit quis, accumsan auctor leo. Mauris et tempus odio. Etiam nibh arcu, vehicula id dolor sit amet, imperdiet efficitur leo.', //null,
+      null,
       'Safety Broker caută Junior Account Manager',
       'Brasov, Bucuresti, Cluj‑Napoca, Sibiu',
       'https://www.ejobs.ro/user/locuri-de-munca/embedded-pre-sales-manager/1287652',
       'ejobs',
       null
     ),
-    // new JobOffer(
-    //   'https://www.hipo.ro/locuri-de-munca/locuri_de_munca/144320/JTI-Romania/Quality-(Management/Improvement)-INTERNSHIP',
-    //   null,
-    //   'JTI Romania',
-    //   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vulputate eros erat, a blandit tortor vehicula a. Quisque sollicitudin ante quis velit ullamcorper imperdiet. Pellentesque vel tellus sit amet nunc dignissim tincidunt. Nam consectetur magna eu ultrices finibus. Praesent finibus ligula imperdiet mauris pellentesque mollis. Donec at odio in neque facilisis maximus in et eros. Duis facilisis orci ac justo tempus bibendum. Maecenas imperdiet lacus eget sapien placerat accumsan. Pellentesque odio dolor, eleifend et pretium in, consectetur ac ex. Mauris ac dui arcu. Pellentesque convallis mauris non nisl venenatis vehicula. Praesent luctus leo quis libero viverra ultrices. Proin posuere rutrum rhoncus. Sed molestie suscipit purus. Donec nec ligula mollis, egestas quam non, egestas sapien. Vivamus tristique magna tellus, sit amet convallis dui lacinia ac. Praesent vel diam a magna cursus vestibulum. Proin condimentum auctor consequat. Maecenas porta sed tellus eu mattis. Integer nulla nisl, auctor ac nulla eget, commodo euismod magna. Morbi suscipit neque at turpis dictum volutpat. Aliquam erat volutpat. Suspendisse in porta libero. Donec at libero id neque ultricies ultrices. Sed efficitur a enim eu fringilla. Maecenas tincidunt finibus posuere. In bibendum eu tortor quis volutpat. Sed quam orci, tempus quis elit quis, accumsan auctor leo. Mauris et tempus odio. Etiam nibh arcu, vehicula id dolor sit amet, imperdiet efficitur leo.', //null,
-    //   'Quality (Management/Improvement) INTERNSHIP',
-    //   'BUCURESTI, Ilfov',
-    //   'https://www.hipo.ro/locuri-de-munca/locuri_de_munca/144320/JTI-Romania/Quality-(Management/Improvement)-INTERNSHIP',
-    //   'hipo',
-    //   'full-time'
-    // ),
   ];
   currentPage: number;
   subscription: Subscription;
-  location: string[] 
+  location: string[];
 
-  constructor(private jobOfferService: JobOfferService) {}
+  constructor(private jobOffersService: JobOffersService) {}
 
   ngOnInit(): void {
-    this.subscription = this.jobOfferService.jobOffersChanged.subscribe(
+    this.subscription = this.jobOffersService.jobOffersChanged.subscribe(
       (jobOffers: JobOffer[]) => {
         this.jobOffers = jobOffers;
       }
@@ -64,7 +54,7 @@ export class JobOffersListComponent implements OnInit, OnDestroy {
 
   getDescription(jobOffer: JobOffer) {
     if (!jobOffer.description) {
-      this.jobOfferService
+      this.jobOffersService
         .scrapeDetails(jobOffer)
         .subscribe((detailedJobOffer) => {
           const jobOfferChangedIndex = this.jobOffers.indexOf(jobOffer);
@@ -73,8 +63,16 @@ export class JobOffersListComponent implements OnInit, OnDestroy {
     }
   }
 
-  setPage(){
+  setPage() {}
 
+  add3Dots(string: string, limit: number) {
+    const dots = '...';
+    if (string.length > limit) {
+      // you can also use substr instead of substring
+      string = string.substring(0, limit) + dots;
+    }
+
+    return string;
   }
 
   ngOnDestroy(): void {

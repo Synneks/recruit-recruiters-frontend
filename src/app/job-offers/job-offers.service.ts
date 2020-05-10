@@ -6,11 +6,12 @@ import { map, tap, take, exhaustMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
+import { SearchParams } from './searchParams.model';
 
 @Injectable({
   providedIn: 'root',
 })
-export class JobOfferService {
+export class JobOffersService {
   jobOffersChanged = new Subject<JobOffer[]>();
 
   constructor(
@@ -19,22 +20,23 @@ export class JobOfferService {
     private router: Router
   ) {}
 
-  newSearch(jobTitle: string, jobLocation: string): Observable<JobOffer[]> {
-    let params = new HttpParams();
-    if (jobTitle !== '') {
-      params = params.set('title', jobTitle);
-    }
-    if (jobLocation !== undefined) {
-      params = params.set('location', jobLocation);
-    }
-    return this.scrapeOffers(params);
-  }
-
   setPage(): Observable<JobOffer[]> {
     return;
   }
 
-  scrapeOffers(params: HttpParams) {
+  scrapeOffers(searchParams: SearchParams) {
+    let params = new HttpParams();
+    if (searchParams.title) {
+      params = params.set('title', searchParams.title);
+    }
+    if (searchParams.location) {
+      params = params.set('location', searchParams.location);
+    }
+    if (searchParams.page) {
+      params = params.set('page', searchParams.page)
+    }
+    console.log(params);
+
     return this.http
       .get<JobOffer[]>(environment.crawlerUrl.concat('/jobs'), {
         params: params,
