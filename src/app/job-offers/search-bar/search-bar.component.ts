@@ -1,6 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { JobOffersService } from '../job-offers.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { SearchParams } from '../searchParams.model';
 
 @Component({
   selector: 'app-search-bar',
@@ -194,13 +196,24 @@ export class SearchBarComponent implements OnInit {
   ];
   selectedLocation: string;
 
-  constructor(private jobOffersService: JobOffersService) {}
+  constructor(
+    private jobOffersService: JobOffersService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {}
 
   onSubmit(form: NgForm) {
-    this.jobOffersService
-      .scrapeOffers({title: form.value['job-title'], location: this.selectedLocation})
-      .subscribe();
+    const paramsToSet = new SearchParams();
+    if (form.value['job-title']) paramsToSet.title = form.value['job-title'];
+    else paramsToSet.title = 'any';
+    if (this.selectedLocation) paramsToSet.location = this.selectedLocation;
+    else paramsToSet.location = 'any';
+
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: paramsToSet,
+    });
   }
 }

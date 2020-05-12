@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { AuthService, AuthResponseData } from './auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SavedJobOffersService } from '../job-offers/saved-job-offers.service';
 
 @Component({
   selector: 'app-auth',
@@ -14,7 +15,7 @@ export class AuthComponent{
   isLoginMode = true;
   isLoading = false;
 
-  constructor(private authService: AuthService, private router: Router, private snackBar: MatSnackBar) {}
+  constructor(private authService: AuthService, private router: Router, private snackBar: MatSnackBar, private savedOffersService: SavedJobOffersService) {}
 
   onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;
@@ -42,6 +43,7 @@ export class AuthComponent{
         console.log(resData);
         this.isLoading = false;
         this.router.navigate(['']);
+        this.savedOffersService.getSavedOffers().subscribe();
         this.showSnackBar('Successfully logged in!');
       },
       errorMessage => {

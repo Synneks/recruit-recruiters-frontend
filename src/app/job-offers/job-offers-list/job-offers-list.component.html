@@ -1,71 +1,38 @@
 <div class="row mt-5">
   <div class="col-12">
-    <!-- <mat-card
-      style="margin-top: 1em; margin-bottom: 1em;"
-      *ngFor="let jobOffer of jobOffers"
-      (click)="
-        getDescription(jobOffer); jobOffer.collapsed = !jobOffer.collapsed
-      "
-    >
-      <mat-card-header>
-        <mat-card-title>
-
-          <div class="row w-100 mr-0 justify-content-between" style="background-color: yellowgreen;">
-            <div class="col-5" style="background-color: blue;">
-              <p>{{ jobOffer.jobTitle }}</p>
-            </div>
-            <div class="col-5" style="background-color: red;">
-              <p>{{ jobOffer.companyName }}</p>
-            </div>
-            <div class="col-2">
-              <img src="{{ jobOffer.companyImage }}" alt="" />
-            </div>
-          </div>
-        </mat-card-title>
-
-        <mat-card-subtitle
-          >{{ jobOffer.location }}, {{ jobOffer.workType }}
-        </mat-card-subtitle>
-      </mat-card-header>
-
-      <mat-card-content *ngIf="!jobOffer.collapsed">
-        <div [innerHTML]="jobOffer.description"></div>
-        <button
-          mat-flat-button
-          color="accent"
-          (click)="onApply(jobOffer.applicationLink)"
-        >
-          Apply
-        </button>
-      </mat-card-content>
-    </mat-card> -->
-
     <mat-accordion [multi]="true">
       <mat-expansion-panel *ngFor="let jobOffer of jobOffers; trackBy: trackByJobOfferOfferLink" (opened)="getDescription(jobOffer)">
         <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'100px'">
-          <div class="row w-100 d-flex align-items-center justify-content-between">
-            <div class="col-5">
+          <div class="row w-100" style="height: 80px;">
+            <div class="col-6 d-flex mt-3 align-items-center">
               <h2>{{ add3Dots(jobOffer.jobTitle, 60) }}</h2>
             </div>
-            <div class="col-5">
-              <h3>{{ jobOffer.companyName }}</h3>
+            <div class="col-4 d-flex mt-3 align-items-center" style="background-color: aquamarine;">
+                <h3>{{ jobOffer.companyName }}</h3>
             </div>
-            <div class="col-2 d-flex justify-content-end">
+            <div class="col-2 d-flex align-items-center justify-content-end">
               <img src="{{ jobOffer.companyImage }}" />
             </div>
           </div>
         </mat-expansion-panel-header>
 
-
         <ng-template matExpansionPanelContent>  
+          <div *ngIf="isDescriptionLoading" class="d-flex justify-content-center" style="text-align: center;">
+            <mat-spinner></mat-spinner>
+          </div>
             <div [innerHTML]="jobOffer.description"></div>
-        </ng-template>
+      
+          <mat-action-row>
+            <button mat-flat-button (click)="jobOffer.isSaved ? onUnsaveOffer(jobOffer) : onSaveOffer(jobOffer)">
+              <!-- <button mat-flat-button (click)="onSaveOffer(jobOffer)"> -->
+              <mat-icon color="primary"> {{ jobOffer.isSaved ? 'star' : 'star_border' }} </mat-icon>
+            </button>
+            <button mat-flat-button color="accent" (click)="onApply(jobOffer.applicationLink)">
+            Apply
+          </button>
+          </mat-action-row>
+      </ng-template>
 
-        <mat-action-row>
-          <button mat-flat-button color="accent" (click)="onApply(jobOffer.applicationLink)">
-          Apply
-        </button>
-        </mat-action-row>
       </mat-expansion-panel>
     </mat-accordion>
   </div>
