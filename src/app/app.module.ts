@@ -12,6 +12,7 @@ import { JobOffersComponent } from './job-offers/job-offers.component';
 import { SearchBarComponent } from './job-offers/search-bar/search-bar.component';
 import { JobOffersListComponent } from './job-offers/job-offers-list/job-offers-list.component';
 import { AuthComponent } from './auth/auth.component';
+import { FilterPipe } from './job-offers/search-bar/filter.pipe';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { AuthComponent } from './auth/auth.component';
     SearchBarComponent,
     JobOffersListComponent,
     AuthComponent,
+    FilterPipe,
   ],
   imports: [
     BrowserModule,

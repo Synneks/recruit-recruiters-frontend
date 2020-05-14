@@ -9,6 +9,7 @@ export class JobOffer {
     public offerLink: string,
     public site: string,
     public workType: string,
-    public collapsed:boolean = true
+    public id:string,
+    public isSaved?: boolean
   ) {}
 }

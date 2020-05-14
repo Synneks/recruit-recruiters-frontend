@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SavedJobOffersService } from '../job-offers/saved-job-offers.service';
+import { JobOffersService } from '../job-offers/job-offers.service';
 
 @Component({
   selector: 'app-header',
@@ -17,6 +19,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private authService: AuthService,
+    private savedJobOffersService: SavedJobOffersService,
+    private jobOffersService: JobOffersService,
     private snackBar: MatSnackBar
   ) {}
 
@@ -40,6 +44,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onSavedOffers() {
     this.router.navigate(['saved-offers']);
+    this.savedJobOffersService.getSavedOffers().subscribe(
+      () => {},
+      (errorMessage) => {
+        console.log(errorMessage);
+        //implement snack bar
+      }
+    );
+  }
+
+  onHome() {
+    this.router.navigate(['']);
+    this.jobOffersService.reset();
   }
 
   showSnackBar(message: string) {

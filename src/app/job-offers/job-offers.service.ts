@@ -2,54 +2,40 @@ import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { JobOffer } from './job-offer.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { map, tap, take, exhaustMap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { AuthService } from '../auth/auth.service';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
-export class JobOfferService {
+export class JobOffersService {
   jobOffersChanged = new Subject<JobOffer[]>();
 
-  constructor(
-    private http: HttpClient,
-    private authService: AuthService,
-    private router: Router
-  ) {}
-
-  newSearch(jobTitle: string, jobLocation: string): Observable<JobOffer[]> {
-    let params = new HttpParams();
-    if (jobTitle !== '') {
-      params = params.set('title', jobTitle);
-    }
-    if (jobLocation !== undefined) {
-      params = params.set('location', jobLocation);
-    }
-    return this.scrapeOffers(params);
-  }
+  constructor(private http: HttpClient) {}
 
   setPage(): Observable<JobOffer[]> {
     return;
   }
 
-  scrapeOffers(params: HttpParams) {
+  scrapeOffers(searchParams: HttpParams) {
+    this.jobOffersChanged.next([])
+    console.log(searchParams);
+    
     return this.http
       .get<JobOffer[]>(environment.crawlerUrl.concat('/jobs'), {
-        params: params,
+        params: searchParams,
       })
       .pipe(
         map((jobOffers) => {
           return jobOffers.map((jobOffer) => {
             return {
               ...jobOffer,
-              collapsed: true,
+              id: this.setId(jobOffer.offerLink),
             };
           });
         }),
         tap((jobOffers) => {
-          this.jobOffersChanged.next(jobOffers);
+          this.jobOffersChanged.next(jobOffers.slice());
         })
       );
   }
@@ -59,64 +45,32 @@ export class JobOfferService {
       .put<JobOffer>(environment.crawlerUrl.concat('/job/details'), jobOffer)
       .pipe(
         map((detailedJobOffer: JobOffer) => {
-          detailedJobOffer.collapsed = false;
+          detailedJobOffer.id = this.setId(detailedJobOffer.offerLink);
           return detailedJobOffer;
         })
       );
   }
 
-  getSavedOffers() {
-    this.router.navigate(['saved-offers']);
-    return this.authService.user.pipe(
-      take(1),
-      exhaustMap((user) => {
-        return this.http.get<JobOffer[]>(
-          environment.firebaseDbUrl.concat(user.id + '.json'),
-          {
-            params: new HttpParams().set('auth', user.token),
-          }
-        );
-      }),
-      map((jobOffers) => {
-        return jobOffers.map((jobOffer) => {
-          return {
-            ...jobOffer,
-            collapsed: true,
-          };
-        });
-      }),
-      tap((jobOffers) => {
-        this.jobOffersChanged.next(jobOffers);
-      })
-    );
+  setId(offerLink: string) {
+    if (offerLink.indexOf('indeed.') > 0) {
+      const index = offerLink.indexOf('jk=') + 3; // indeed.com shows the id of the job offer on url parameter called jk
+      return offerLink.slice(index, index + 16); // the id has 16 characters
+    }
+    if (offerLink.indexOf('ejobs.') > 0) {
+      const index = offerLink.lastIndexOf('/') + 1; // ejobs shows the id as the last path
+      return offerLink.slice(index);
+    }
+    if (offerLink.indexOf('hipo.') > 0) {
+      // hipo shows the id as the third path
+      let croppedSequence = offerLink.slice(offerLink.indexOf('hipo.'));
+      for (let i = 0; i < 3; i++) {
+        croppedSequence = croppedSequence.slice(croppedSequence.indexOf('/') + 1);
+      }
+      return croppedSequence.slice(0, croppedSequence.indexOf('/'));
+    }
   }
 
-  saveOffer(jobOffer: JobOffer) {
-    this.authService.user.pipe(
-      take(1),
-      exhaustMap((user) => {
-        return this.http.put(
-          environment.firebaseDbUrl.concat(user.id + '.json'),
-          jobOffer,
-          {
-            params: new HttpParams().set('auth', user.token),
-          }
-        );
-      })
-    );
-  }
-
-  unsaveOffer(jobOffer: JobOffer) {
-    this.authService.user.pipe(
-      take(1),
-      exhaustMap((user) => {
-        return this.http.delete(
-          environment.firebaseDbUrl.concat(user.id + '.json'),
-          {
-            params: new HttpParams().set('auth', user.token),
-          }
-        );
-      })
-    );
+  reset(){
+    this.jobOffersChanged.next([]);
   }
 }
