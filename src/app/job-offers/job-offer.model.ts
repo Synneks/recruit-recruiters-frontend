@@ -10,6 +10,5 @@ export class JobOffer {
     public site: string,
     public workType: string,
     public id:string,
-    public isSaved?: boolean
   ) {}
 }
