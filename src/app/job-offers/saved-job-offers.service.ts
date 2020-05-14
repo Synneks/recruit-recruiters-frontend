@@ -13,14 +13,9 @@ import { HttpParams, HttpClient } from '@angular/common/http';
 export class SavedJobOffersService {
   savedOffersChanged = new Subject<JobOffer[]>();
 
-  constructor(
-    private http: HttpClient,
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   getSavedOffers() {
-    this.router.navigate(['saved-offers']);
     return this.authService.user.pipe(
       take(1),
       exhaustMap((user) => {
@@ -54,7 +49,7 @@ export class SavedJobOffersService {
               return mappedOffers;
             }),
             tap((jobOffers) => {
-              this.savedOffersChanged.next(jobOffers);
+              this.savedOffersChanged.next(jobOffers.slice());
             })
           );
       })
@@ -62,19 +57,18 @@ export class SavedJobOffersService {
   }
 
   saveOffer(jobOffer: JobOffer) {
-    return this.authService.user
-      .pipe(
-        take(1),
-        exhaustMap((user) => {
-          return this.http.put(
-            environment.firebaseUsersUrl.concat(`${user.id}/${jobOffer.id}.json`),
-            jobOffer,
-            {
-              params: new HttpParams().set('auth', user.token),
-            }
-          );
-        })
-      );
+    return this.authService.user.pipe(
+      take(1),
+      exhaustMap((user) => {
+        return this.http.put(
+          environment.firebaseUsersUrl.concat(`${user.id}/${jobOffer.id}.json`),
+          jobOffer,
+          {
+            params: new HttpParams().set('auth', user.token),
+          }
+        );
+      })
+    );
   }
 
   unsaveOffer(jobOffer: JobOffer) {
@@ -82,7 +76,7 @@ export class SavedJobOffersService {
       take(1),
       exhaustMap((user) => {
         return this.http.delete(
-          environment.firebaseUsersUrl.concat(user.id + jobOffer + '.json'),
+          environment.firebaseUsersUrl.concat(`${user.id}/${jobOffer.id}.json`),
           {
             params: new HttpParams().set('auth', user.token),
           }

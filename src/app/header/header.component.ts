@@ -4,6 +4,7 @@ import { AuthService } from '../auth/auth.service';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SavedJobOffersService } from '../job-offers/saved-job-offers.service';
+import { JobOffersService } from '../job-offers/job-offers.service';
 
 @Component({
   selector: 'app-header',
@@ -19,6 +20,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private router: Router,
     private authService: AuthService,
     private savedJobOffersService: SavedJobOffersService,
+    private jobOffersService: JobOffersService,
     private snackBar: MatSnackBar
   ) {}
 
@@ -49,6 +51,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
         //implement snack bar
       }
     );
+  }
+
+  onHome() {
+    this.router.navigate(['']);
+    this.jobOffersService.reset();
   }
 
   showSnackBar(message: string) {

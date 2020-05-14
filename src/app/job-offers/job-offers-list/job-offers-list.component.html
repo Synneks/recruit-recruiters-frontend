@@ -1,5 +1,5 @@
-<div class="row mt-5">
-  <div class="col-12">
+<div class="row mt-5" *ngIf="!onSavedOffers">
+  <div class="col-12" *ngIf="jobOffers.length > 0">
     <mat-accordion [multi]="true">
       <mat-expansion-panel *ngFor="let jobOffer of jobOffers; trackBy: trackByJobOfferOfferLink" (opened)="getDescription(jobOffer)">
         <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'100px'">
@@ -7,8 +7,8 @@
             <div class="col-6 d-flex mt-3 align-items-center">
               <h2>{{ add3Dots(jobOffer.jobTitle, 60) }}</h2>
             </div>
-            <div class="col-4 d-flex mt-3 align-items-center" style="background-color: aquamarine;">
-                <h3>{{ jobOffer.companyName }}</h3>
+            <div class="col-4 d-flex mt-3 align-items-center">
+              <h3>{{ jobOffer.companyName }}</h3>
             </div>
             <div class="col-2 d-flex align-items-center justify-content-end">
               <img src="{{ jobOffer.companyImage }}" />
@@ -16,24 +16,73 @@
           </div>
         </mat-expansion-panel-header>
 
-        <ng-template matExpansionPanelContent>  
+        <ng-template matExpansionPanelContent>
           <div *ngIf="isDescriptionLoading" class="d-flex justify-content-center" style="text-align: center;">
             <mat-spinner></mat-spinner>
           </div>
-            <div [innerHTML]="jobOffer.description"></div>
-      
+          <div [innerHTML]="jobOffer.description"></div>
+
           <mat-action-row>
-            <button mat-flat-button (click)="jobOffer.isSaved ? onUnsaveOffer(jobOffer) : onSaveOffer(jobOffer)">
-              <!-- <button mat-flat-button (click)="onSaveOffer(jobOffer)"> -->
-              <mat-icon color="primary"> {{ jobOffer.isSaved ? 'star' : 'star_border' }} </mat-icon>
+            <button mat-flat-button (click)=" isSaved(jobOffer) ? onUnsaveOffer(jobOffer) : onSaveOffer(jobOffer)">
+              <mat-icon color="primary">
+                {{ isSaved(jobOffer) ? "star" : "star_border" }}
+              </mat-icon>
             </button>
             <button mat-flat-button color="accent" (click)="onApply(jobOffer.applicationLink)">
-            Apply
-          </button>
+              Apply
+            </button>
           </mat-action-row>
-      </ng-template>
-
+        </ng-template>
       </mat-expansion-panel>
     </mat-accordion>
+
+    <button mat-button class="w-100" style="height: 100px;" (click)="onLoadMore()">
+      Load More
+    </button>
+  </div>
+  <div class="col-12 d-flex justify-content-center" *ngIf="!jobOffers.length">
+    <h1 color="primary">
+      Welcome to Recruit-Recruiters, let us know what jobs you are looking for
+    </h1>
+  </div>
+</div>
+
+<div class="row mt-5" *ngIf="onSavedOffers">
+  <div class="col-12" *ngIf="savedOffers.length > 0">
+    <mat-accordion [multi]="true">
+      <mat-expansion-panel *ngFor="let jobOffer of savedOffers">
+        <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'100px'">
+          <div class="row w-100" style="height: 80px;">
+            <div class="col-6 d-flex mt-3 align-items-center">
+              <h2>{{ add3Dots(jobOffer.jobTitle, 60) }}</h2>
+            </div>
+            <div class="col-4 d-flex mt-3 align-items-center">
+              <h3>{{ jobOffer.companyName }}</h3>
+            </div>
+            <div class="col-2 d-flex align-items-center justify-content-end">
+              <img src="{{ jobOffer.companyImage }}" />
+            </div>
+          </div>
+        </mat-expansion-panel-header>
+
+        <ng-template matExpansionPanelContent>
+          <div [innerHTML]="jobOffer.description"></div>
+
+          <mat-action-row>
+            <button mat-flat-button (click)="isSaved(jobOffer) ? onUnsaveOffer(jobOffer) : onSaveOffer(jobOffer)">
+              <mat-icon color="primary">
+                {{ isSaved(jobOffer) ? "star" : "star_border" }}
+              </mat-icon>
+            </button>
+            <button mat-flat-button color="accent" (click)="onApply(jobOffer.applicationLink)">
+              Apply
+            </button>
+          </mat-action-row>
+        </ng-template>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <div class="col-12 d-flex justify-content-center" *ngIf="!savedOffers.length">
+    <h1 color="primary">Here you will see your saved offers</h1>
   </div>
 </div>

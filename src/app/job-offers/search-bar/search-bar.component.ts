@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { JobOffersService } from '../job-offers.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SearchParams } from '../searchParams.model';
 
@@ -195,9 +194,9 @@ export class SearchBarComponent implements OnInit {
     'Zlatna',
   ];
   selectedLocation: string;
+  @Input() onSavedOffers;
 
   constructor(
-    private jobOffersService: JobOffersService,
     private activatedRoute: ActivatedRoute,
     private router: Router
   ) {}

@@ -1,12 +1,12 @@
 <form (ngSubmit)="onSubmit(form)" #form="ngForm">
-  <div class="row align-content-center mt-5">
-    <div class="col-md-6 columns">
+  <div class="row align-content-center mt-5 pr-0">
+    <div class="col-md-6">
       <mat-form-field class="w-100" appearance="outline">
         <mat-label>Job Title</mat-label>
-        <input matInput name="job-title" ngModel />
+        <input matInput name="job-title" ngModel pattern='^[a-zA-Z ]*$' />
       </mat-form-field>
     </div>
-    <div class="col-4 columns">
+    <div class="col-md-4">
       <mat-form-field class="w-100" appearance="outline">
         <mat-label>Location</mat-label>
         <mat-select [(ngModel)]="selectedLocation" name="job-location">
@@ -16,7 +16,7 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="col-2 columns search-button">
+    <div class="col-md-2 search-button d-flex justify-content-center" *ngIf="!onSavedOffers">
       <button mat-flat-button color="primary" type="submit" [disabled]="!form.valid">
         Search
       </button>

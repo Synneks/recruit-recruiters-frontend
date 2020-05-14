@@ -4,7 +4,6 @@ import { JobOffer } from './job-offer.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { SearchParams } from './searchParams.model';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +35,7 @@ export class JobOffersService {
           });
         }),
         tap((jobOffers) => {
-          this.jobOffersChanged.next(jobOffers);
+          this.jobOffersChanged.next(jobOffers.slice());
         })
       );
   }
@@ -69,5 +68,9 @@ export class JobOffersService {
       }
       return croppedSequence.slice(0, croppedSequence.indexOf('/'));
     }
+  }
+
+  reset(){
+    this.jobOffersChanged.next([]);
   }
 }
