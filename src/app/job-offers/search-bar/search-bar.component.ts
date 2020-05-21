@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SearchParams } from '../searchParams.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-search-bar',

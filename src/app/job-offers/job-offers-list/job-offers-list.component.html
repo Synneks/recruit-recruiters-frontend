@@ -1,5 +1,5 @@
 <div class="row mt-5" *ngIf="!onSavedOffers">
-  <div class="col-12" *ngIf="jobOffers.length > 0">
+  <div class="col-12" *ngIf="jobOffers && jobOffers.length > 0">
     <mat-accordion [multi]="true">
       <mat-expansion-panel *ngFor="let jobOffer of jobOffers; trackBy: trackByJobOfferOfferLink" (opened)="getDescription(jobOffer)">
         <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'100px'">
@@ -39,11 +39,6 @@
     <button mat-button class="w-100" style="height: 100px;" (click)="onLoadMore()">
       Load More
     </button>
-  </div>
-  <div class="col-12 d-flex justify-content-center" *ngIf="!jobOffers.length">
-    <h1 color="primary">
-      Welcome to Recruit-Recruiters, let us know what jobs you are looking for
-    </h1>
   </div>
 </div>
 

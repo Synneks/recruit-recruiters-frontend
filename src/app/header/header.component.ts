@@ -55,7 +55,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onHome() {
     this.router.navigate(['']);
-    this.jobOffersService.reset();
+    // this.jobOffersService.reset();
   }
 
   showSnackBar(message: string) {
