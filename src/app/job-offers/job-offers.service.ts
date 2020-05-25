@@ -1,41 +1,40 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { JobOffer } from './job-offer.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { ScrappeOffers } from './scrape-offers.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class JobOffersService {
-  jobOffersChanged = new Subject<JobOffer[]>();
+  jobOffersChanged = new Subject<ScrappeOffers>();
 
   constructor(private http: HttpClient) {}
 
-  setPage(): Observable<JobOffer[]> {
-    return;
-  }
-
   scrapeOffers(searchParams: HttpParams) {
-    this.jobOffersChanged.next([])
+    this.jobOffersChanged.next(null);
     console.log(searchParams);
-    
+
     return this.http
-      .get<JobOffer[]>(environment.crawlerUrl.concat('/jobs'), {
+      .get<ScrappeOffers>(environment.crawlerUrl.concat('/jobs'), {
         params: searchParams,
       })
       .pipe(
-        map((jobOffers) => {
-          return jobOffers.map((jobOffer) => {
+        map((response) => {
+          response.jobOffers.map((jobOffer) => {
             return {
               ...jobOffer,
               id: this.setId(jobOffer.offerLink),
             };
           });
+          return response;
         }),
-        tap((jobOffers) => {
-          this.jobOffersChanged.next(jobOffers.slice());
+        tap((response) => {
+          console.log(response);
+          this.jobOffersChanged.next(response);
         })
       );
   }
@@ -64,13 +63,15 @@ export class JobOffersService {
       // hipo shows the id as the third path
       let croppedSequence = offerLink.slice(offerLink.indexOf('hipo.'));
       for (let i = 0; i < 3; i++) {
-        croppedSequence = croppedSequence.slice(croppedSequence.indexOf('/') + 1);
+        croppedSequence = croppedSequence.slice(
+          croppedSequence.indexOf('/') + 1
+        );
       }
       return croppedSequence.slice(0, croppedSequence.indexOf('/'));
     }
   }
 
-  reset(){
-    this.jobOffersChanged.next([]);
+  reset() {
+    this.jobOffersChanged.next(null);
   }
 }

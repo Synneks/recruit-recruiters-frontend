@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchParams } from '../searchParams.model';
+import { ScrappeOffers } from '../scrape-offers.model';
 
 @Component({
   selector: 'app-job-offers-list',
@@ -65,8 +66,10 @@ export class JobOffersListComponent implements OnInit, OnDestroy {
 
   setJobOffersSubscription() {
     this.jobOffersSubscription = this.jobOffersService.jobOffersChanged.subscribe(
-      (jobOffers: JobOffer[]) => {
-        this.jobOffers = jobOffers;
+      (scrapeOffers: ScrappeOffers) => {
+        if (scrapeOffers) {
+          this.jobOffers = scrapeOffers.jobOffers;
+        }
       }
     );
   }

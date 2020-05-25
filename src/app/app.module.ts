@@ -13,6 +13,7 @@ import { SearchBarComponent } from './job-offers/search-bar/search-bar.component
 import { JobOffersListComponent } from './job-offers/job-offers-list/job-offers-list.component';
 import { AuthComponent } from './auth/auth.component';
 import { FilterPipe } from './job-offers/search-bar/filter.pipe';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { FilterPipe } from './job-offers/search-bar/filter.pipe';
     RouterModule,
     FormsModule,
     MaterialModule,
+    ChartsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

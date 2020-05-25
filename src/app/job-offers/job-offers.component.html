@@ -1,12 +1,77 @@
 <div class="row justify-content-center">
-  <div class="col-md-10 col-12">
+  <div class="col-md-8 col-12">
     <app-search-bar [onSavedOffers]="onSavedOffers"></app-search-bar>
   </div>
 </div>
 
-<div class="row justify-content-center">
-  <div class="col-md-10 col-12">
-    <div *ngIf="isLoading" class="row pt-3 d-flex justify-content-center" style="text-align: center;">
+<div class="row d-none d-lg-flex justify-content-center">
+  <div class="col-2">
+    <div style="position: sticky; height: 150px;">
+      <canvas *ngIf="barChartDataSeconds" baseChart
+        [datasets]="barChartDataSeconds"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [legend]="true"
+        [chartType]="'horizontalBar'">
+      </canvas>
+    </div>
+  </div>
+  <div class="col-md-8 col-8">
+    <div
+      *ngIf="isLoading"
+      class="row pt-3 d-flex justify-content-center"
+      style="text-align: center;"
+    >
+      <mat-spinner></mat-spinner>
+    </div>
+    <app-job-offers-list [onSavedOffers]="onSavedOffers"></app-job-offers-list>
+  </div>
+  <div class="col-2">
+    <div style="position: sticky; height: 150px;">
+      <canvas *ngIf="barChartDataAmount" baseChart
+        [datasets]="barChartDataAmount"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [legend]="true"
+        [chartType]="'doughnut'">
+      </canvas>  
+    </div>
+  </div>
+</div>
+
+<div class="row d-lg-none justify-content-center">
+  <div class="row w-100 justify-content-center" style="position: relative; top: 30px; height: 150px;">
+    <div class="col-6 w-100">
+      <canvas
+        *ngIf="barChartDataSeconds"
+        baseChart
+        [datasets]="barChartDataSeconds"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [legend]="true"
+        [chartType]="'horizontalBar'"
+      >
+      </canvas>
+    </div>
+    <div class="col-6 w-100">
+      <canvas
+        *ngIf="barChartDataAmount"
+        baseChart
+        [datasets]="barChartDataAmount"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [legend]="true"
+        [chartType]="'doughnut'"
+      >
+      </canvas>
+    </div>
+  </div>
+  <div class="col-12">
+    <div
+      *ngIf="isLoading"
+      class="row pt-3 d-flex justify-content-center"
+      style="text-align: center;"
+    >
       <mat-spinner></mat-spinner>
     </div>
     <app-job-offers-list [onSavedOffers]="onSavedOffers"></app-job-offers-list>
