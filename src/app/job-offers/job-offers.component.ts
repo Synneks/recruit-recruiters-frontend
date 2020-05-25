@@ -15,11 +15,21 @@ import { ScrappeOffers } from './scrape-offers.model';
 export class JobOffersComponent implements OnInit, OnDestroy {
   paramsSubscription: Subscription;
   savedOffersPathSubscription: Subscription;
+  trendingSearchesSubscription: Subscription;
   indeedStats: { amount: number; time: number };
   ejobsStats: { amount: number; time: number };
   hipoStats: { amount: number; time: number };
   onSavedOffers = null;
   isLoading = false;
+  public barChartOptions = {
+    scaleShowVerticalLines: false,
+    responsive: true,
+    maintainAspectRatio: false
+  };
+  barChartLabels = ['indeed.com', 'ejobs.ro', 'hipo.ro'];
+  barChartDataAmount;
+  barChartDataSeconds;
+  barChartDataTrending;
 
   constructor(
     private jobOffersService: JobOffersService,
@@ -29,6 +39,7 @@ export class JobOffersComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.barChartDataAmount = null;
     this.initiateSearchAfterParams();
     this.setSavedOffersRouteSubscription();
     this.setScrappeOffersSubscription();
@@ -49,6 +60,8 @@ export class JobOffersComponent implements OnInit, OnDestroy {
             paramsToSearch = paramsToSearch.set('page', params['page']);
           }
           this.isLoading = true;
+          this.barChartDataAmount = null;
+          this.barChartDataSeconds = null;
           this.jobOffersService.scrapeOffers(paramsToSearch).subscribe(
             () => {
               this.isLoading = false;
@@ -63,12 +76,34 @@ export class JobOffersComponent implements OnInit, OnDestroy {
     );
   }
 
-  private setScrappeOffersSubscription(){
+  private setScrappeOffersSubscription() {
     this.jobOffersService.jobOffersChanged.subscribe(
       (scrapeOffers: ScrappeOffers) => {
-        this.indeedStats = scrapeOffers.indeed;
-        this.ejobsStats = scrapeOffers.ejobs;
-        this.hipoStats = scrapeOffers.hipo;
+        if (scrapeOffers) {
+          this.indeedStats = scrapeOffers.indeed;
+          this.ejobsStats = scrapeOffers.ejobs;
+          this.hipoStats = scrapeOffers.hipo;
+          this.barChartDataAmount = [
+            {
+              data: [
+                this.indeedStats.amount,
+                this.ejobsStats.amount,
+                this.hipoStats.amount,
+              ],
+              label: 'Job Offers',
+            },
+          ];
+          this.barChartDataSeconds = [
+            {
+              data: [
+                this.indeedStats.time,
+                this.ejobsStats.time,
+                this.hipoStats.time,
+              ],
+              label: 'Seconds',
+            },
+          ];
+        }
       }
     );
   }
@@ -79,13 +114,15 @@ export class JobOffersComponent implements OnInit, OnDestroy {
         if (urlSegment.length > 0 && urlSegment[0].path === 'saved-offers') {
           this.isLoading = true;
           this.onSavedOffers = true;
-          this.savedJobOffersService.getSavedOffers().subscribe(() => {
-            this.isLoading = false;
-          },
-          (errorMessage) => {
-            this.isLoading = false;
-            this.showSnackBar(errorMessage);
-          })
+          this.savedJobOffersService.getSavedOffers().subscribe(
+            () => {
+              this.isLoading = false;
+            },
+            (errorMessage) => {
+              this.isLoading = false;
+              this.showSnackBar(errorMessage);
+            }
+          );
         } else {
           this.onSavedOffers = false;
         }

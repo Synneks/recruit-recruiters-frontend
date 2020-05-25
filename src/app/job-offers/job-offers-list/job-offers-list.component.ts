@@ -67,7 +67,9 @@ export class JobOffersListComponent implements OnInit, OnDestroy {
   setJobOffersSubscription() {
     this.jobOffersSubscription = this.jobOffersService.jobOffersChanged.subscribe(
       (scrapeOffers: ScrappeOffers) => {
-        this.jobOffers = scrapeOffers.jobOffers;
+        if (scrapeOffers) {
+          this.jobOffers = scrapeOffers.jobOffers;
+        }
       }
     );
   }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { JobOffer } from './job-offer.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, tap } from 'rxjs/operators';
@@ -34,7 +34,6 @@ export class JobOffersService {
         }),
         tap((response) => {
           console.log(response);
-          
           this.jobOffersChanged.next(response);
         })
       );
