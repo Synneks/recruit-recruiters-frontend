@@ -19,6 +19,8 @@ export class SavedJobOffersService {
     return this.authService.user.pipe(
       take(1),
       exhaustMap((user) => {
+        if (!user) 
+          return [];
         return this.http
           .get<JobOffer[]>(
             environment.firebaseUsersUrl.concat(user.id + '.json'),

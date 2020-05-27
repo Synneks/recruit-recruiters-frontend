@@ -40,6 +40,7 @@ export class JobOffersListComponent implements OnInit, OnDestroy {
     //   null
     // ),
   ];
+  noOffersFound;
   savedOffers: JobOffer[] = [];
   jobOffersSubscription: Subscription;
   savedOffersSubscription: Subscription;
@@ -59,6 +60,7 @@ export class JobOffersListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.noOffersFound = false;
     this.setJobOffersSubscription();
     this.setSavedOffersSubscription();
     this.setLoginSubscription();
@@ -69,6 +71,7 @@ export class JobOffersListComponent implements OnInit, OnDestroy {
       (scrapeOffers: ScrappeOffers) => {
         if (scrapeOffers) {
           this.jobOffers = scrapeOffers.jobOffers;
+          this.noOffersFound = this.jobOffers.length === 0;
         }
       }
     );

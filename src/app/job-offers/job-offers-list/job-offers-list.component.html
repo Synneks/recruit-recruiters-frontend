@@ -40,6 +40,9 @@
       Load More
     </button>
   </div>
+  <div class="col-12" *ngIf="noOffersFound">
+    <h2>No offers found for this criteria</h2>
+  </div>
 </div>
 
 <div class="row mt-5" *ngIf="onSavedOffers">

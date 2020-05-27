@@ -48,14 +48,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
       () => {},
       (errorMessage) => {
         console.log(errorMessage);
-        //implement snack bar
+        this.showSnackBar("Unfortunately we couldn't find your saved offers!")
       }
     );
   }
 
   onHome() {
     this.router.navigate(['']);
-    // this.jobOffersService.reset();
+    this.jobOffersService.reset();
   }
 
   showSnackBar(message: string) {

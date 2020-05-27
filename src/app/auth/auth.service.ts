@@ -5,7 +5,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { catchError, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { SavedJobOffersService } from '../job-offers/saved-job-offers.service';
 
 export interface AuthResponseData {
   kind: string;
