@@ -14,6 +14,7 @@ import { JobOffersListComponent } from './job-offers/job-offers-list/job-offers-
 import { AuthComponent } from './auth/auth.component';
 import { FilterPipe } from './job-offers/search-bar/filter.pipe';
 import { ChartsModule } from 'ng2-charts';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ChartsModule } from 'ng2-charts';
     JobOffersListComponent,
     AuthComponent,
     FilterPipe,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,
