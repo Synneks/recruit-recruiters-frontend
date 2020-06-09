@@ -2,6 +2,11 @@
   <div class="col-md-8 col-12">
     <app-search-bar [onSavedOffers]="onSavedOffers"></app-search-bar>
   </div>
+  <div class="col-md-8 col-12" *ngIf="welcome && !isLoading">
+    <br>
+    <br>
+    <h2>Welcome to Recruit-Recruiters, a platform for centralizing job offers from <a href="https://hipo.ro" target="_blank">hipo.ro</a>, <a href="https://ejobs.ro" target="_blank">ejobs.ro</a> and <a href="https://indeed.com" target="_blank">indeed.com</a></h2>
+  </div>
 </div>
 
 <div class="row d-none d-lg-flex justify-content-center">
@@ -24,6 +29,7 @@
     >
       <mat-spinner></mat-spinner>
     </div>
+
     <app-job-offers-list [onSavedOffers]="onSavedOffers"></app-job-offers-list>
   </div>
   <div class="col-2">

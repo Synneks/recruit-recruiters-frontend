@@ -48,7 +48,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       () => {},
       (errorMessage) => {
         console.log(errorMessage);
-        this.showSnackBar("Unfortunately we couldn't find your saved offers!")
+        this.showSnackBar("Unfortunately we couldn't find your saved offers!");
       }
     );
   }

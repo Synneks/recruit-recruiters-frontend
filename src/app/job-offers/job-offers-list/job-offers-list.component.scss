@@ -1,4 +1,25 @@
-img {
+.company-logo {
     max-height: 70px;
     max-width: 70px;
+}
+
+img { 
+    width: 100%;
+}
+
+.responsive-font-title {
+    font-size: 20px;
+}
+
+.responsive-font-company {
+    font-size: 18px;
+}
+
+@media screen and (max-width: 576px) { 
+    .responsive-font-title {
+        font-size:16px;
+    }
+    .responsive-font-company {
+        font-size:14px;
+    }
 }

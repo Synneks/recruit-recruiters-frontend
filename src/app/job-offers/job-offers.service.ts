@@ -71,7 +71,7 @@ export class JobOffersService {
     }
   }
 
-  reset() {
+  reset() {    
     this.jobOffersChanged.next(null);
   }
 }

@@ -12,7 +12,6 @@ import { JobOffersComponent } from './job-offers/job-offers.component';
 import { SearchBarComponent } from './job-offers/search-bar/search-bar.component';
 import { JobOffersListComponent } from './job-offers/job-offers-list/job-offers-list.component';
 import { AuthComponent } from './auth/auth.component';
-import { FilterPipe } from './job-offers/search-bar/filter.pipe';
 import { ChartsModule } from 'ng2-charts';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
@@ -24,7 +23,6 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     SearchBarComponent,
     JobOffersListComponent,
     AuthComponent,
-    FilterPipe,
     PageNotFoundComponent,
   ],
   imports: [
