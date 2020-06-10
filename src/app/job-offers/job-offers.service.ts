@@ -16,7 +16,7 @@ export class JobOffersService {
 
   scrapeOffers(searchParams: HttpParams) {
     this.jobOffersChanged.next(null);
-    console.log(searchParams);
+    // console.log(searchParams);
 
     return this.http
       .get<ScrappeOffers>(environment.crawlerUrl.concat('/jobs'), {

@@ -131,7 +131,7 @@ export class JobOffersListComponent implements OnInit, OnDestroy {
   onSaveOffer(jobOffer: JobOffer) {
     if (this.loggedIn) {
       this.savedJobOffersService.saveOffer(jobOffer).subscribe((resp) => {
-        console.log(resp);
+        // console.log(resp);
         this.savedJobOffersService.getSavedOffers().subscribe();
         this.showSnackBar('Offer saved!');
       });
@@ -147,7 +147,7 @@ export class JobOffersListComponent implements OnInit, OnDestroy {
 
   add3Dots(string: string, limit: number) {
     const dots = '...';
-    if (string.length > limit) {
+    if (string && string.length > limit) {
       string = string.substring(0, limit) + dots;
     }
     return string;

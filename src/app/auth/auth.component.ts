@@ -40,7 +40,7 @@ export class AuthComponent{
 
     authObs.subscribe(
       resData => {
-        console.log(resData);
+        // console.log(resData);
         this.isLoading = false;
         this.router.navigate(['']);
         this.savedOffersService.getSavedOffers().subscribe();

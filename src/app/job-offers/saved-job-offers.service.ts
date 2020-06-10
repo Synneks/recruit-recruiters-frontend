@@ -47,7 +47,7 @@ export class SavedJobOffersService {
                   )
                 );
               }
-              console.log(mappedOffers);
+              // console.log(mappedOffers);
               return mappedOffers;
             }),
             tap((jobOffers) => {

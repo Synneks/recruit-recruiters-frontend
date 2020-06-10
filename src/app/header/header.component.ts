@@ -47,7 +47,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.savedJobOffersService.getSavedOffers().subscribe(
       () => {},
       (errorMessage) => {
-        console.log(errorMessage);
+        // console.log(errorMessage);
         this.showSnackBar("Unfortunately we couldn't find your saved offers!");
       }
     );
