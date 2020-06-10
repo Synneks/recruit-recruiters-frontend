@@ -16,7 +16,6 @@ export class JobOffersComponent implements OnInit, OnDestroy {
   paramsSubscription: Subscription;
   savedOffersPathSubscription: Subscription;
   trendingSearchesSubscription: Subscription;
-  welcome;
   indeedStats: { amount: number; time: number };
   ejobsStats: { amount: number; time: number };
   hipoStats: { amount: number; time: number };
@@ -40,11 +39,9 @@ export class JobOffersComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.welcome = true;
     this.barChartDataAmount = null;
     this.jobOffersService.jobOffersChanged.subscribe((response) => {
       if (response === null) {
-        this.welcome = true;
         this.barChartDataAmount = null;
         this.barChartDataSeconds = null;
       }
@@ -68,7 +65,6 @@ export class JobOffersComponent implements OnInit, OnDestroy {
           if (params['page']) {
             paramsToSearch = paramsToSearch.set('page', params['page']);
           }
-          this.welcome = false;
           this.isLoading = true;
           this.barChartDataAmount = null;
           this.barChartDataSeconds = null;
@@ -90,7 +86,6 @@ export class JobOffersComponent implements OnInit, OnDestroy {
     this.jobOffersService.jobOffersChanged.subscribe(
       (scrapeOffers: ScrappeOffers) => {
         if (scrapeOffers) {
-          this.welcome = false;
           this.indeedStats = scrapeOffers.indeed;
           this.ejobsStats = scrapeOffers.ejobs;
           this.hipoStats = scrapeOffers.hipo;
